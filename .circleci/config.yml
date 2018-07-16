@@ -2,18 +2,9 @@ version: 2
 jobs:
   build:
     docker:
-      - image: microsoft/dotnet:2.1-sdk
-    environment:
-      - DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      - image: microsoft/aspnetcore-build:2.1
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - cake-{{ .Environment.CAKE_VERSION }}
-      - run: ./build.sh build.cake --target=restore
-      - save_cache:
-          key: cake-{{ .Environment.CAKE_VERSION }}
-          paths:
-            - ~/api/tools
-      - run: ./build.sh build.cake --target=build
-      - run: ./build.sh build.cake --target=test
+      - run: find .
+      - run: dotnet restore
+      - run: dotnet build
